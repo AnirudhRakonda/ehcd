@@ -1,0 +1,24 @@
+%{
+#include <stdio.h>
+#include <string.h>
+%}
+
+char *keywords[] = {"int", "float", "char", "if", "else", "while", "return"};
+
+int is_keyword(char *str) {
+    for (int i = 0; i < 7; i++) if (strcmp(str, keywords[i]) == 0) return 1;
+    return 0;
+}
+
+%%
+
+[a-zA-Z][a-zA-Z0-9]* { if (is_keyword(yytext)) printf("Keyword: %s\n", yytext); else printf("Identifier: %s\n", yytext); }
+[0-9]+              { printf("Number: %s\n", yytext); }
+[ \t\n]+            { }
+
+%%
+
+int main() {
+    yylex();
+    return 0;
+}
